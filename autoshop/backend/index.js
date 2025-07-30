@@ -98,6 +98,17 @@ const server = app.listen(port, () => {
 
 module.exports = server;
 
+app.delete('/api/products/:id', async (req, res) => {
+    try {
+      const { id } = req.params;
+      await pool.query('DELETE FROM products WHERE product_id = $1', [id]);
+      res.sendStatus(204);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+
 // AI Product Sourcing
 app.put('/api/products/:id/approve', async (req, res) => {
     try {
